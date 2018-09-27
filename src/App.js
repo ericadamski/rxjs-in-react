@@ -15,6 +15,18 @@ class App extends Component {
   render() {
     return (
       <Container>
+        <Links>
+          <Link
+            href="https://github.com/ericadamski/rxjs-in-react"
+            target="blank"
+            label="Code"
+          >
+            <ion-icon name="logo-github" />
+          </Link>
+          <Link href="" label="Live">
+            <ion-icon name="link" />
+          </Link>
+        </Links>
         <Container>
           Click Me
           <span role="img">↓</span>
@@ -36,6 +48,7 @@ injectGlobal`
   html, body {
     padding: 0;
     margin: 0;
+    user-select: none;
   }
 `;
 
@@ -55,6 +68,7 @@ const Container = styled.div`
 
 const Clicks = styled.span`
   font-size: 4rem;
+  padding-bottom: 2rem;
 `;
 
 const Button = styled.button`
@@ -66,4 +80,31 @@ const Button = styled.button`
 
   font-size: 2rem;
   line-height: 2rem;
+`;
+
+const Links = styled.div`
+  display: flex;
+  width: 95vw;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 20px;
+`;
+
+const Link = styled.a`
+  position: relative;
+  margin: 0 2rem;
+  color: #192a51;
+
+  &:visited {
+    color: #192a51;
+  }
+
+  &:after {
+    content: '${props => props.label}';
+    font-size: 1rem;
+    position: absolute;
+    top: 2rem;
+    left: calc(50% - ${props => props.label.length}%);
+    transform: translateX(-50%);
+  }
 `;
