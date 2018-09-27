@@ -29,7 +29,7 @@ class App extends Component {
         </Links>
         <Container>
           Click Me
-          <span role="img">↓</span>
+          <span role="img" aria-label="arrow down">↓</span>
           <Button onClick={this.handleClick.bind(this)}>
             <span role="img" aria-label="angel">
               😇
@@ -104,7 +104,7 @@ const Link = styled.a`
     font-size: 1rem;
     position: absolute;
     top: 2rem;
-    left: calc(50% - ${props => props.label.length}%);
+    left: calc(50% - ${props => props.label.length}px);
     transform: translateX(-50%);
   }
 `;
