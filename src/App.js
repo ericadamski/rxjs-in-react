@@ -3,12 +3,31 @@ import styled, { injectGlobal } from "styled-components";
 
 // import fetch from 'unfetch';
 
+const EMOJIS_URI = "https://api.github.com/emojis";
+
 class App extends Component {
   state = {
-    clicks: 0
+    clicks: 0,
   };
 
+  componentDidMount() {}
+
+  componentWillUnmount() {
+    /**
+     * Avoid Memory leaks by unsubscribing from the
+     * event emitter
+     */
+  }
+
   handleClick(event) {
+    /**
+     * React Synthetic events
+     * we want the event to live longer 
+     * than this function
+     * 
+     * event.persist();
+     */
+
     this.setState(({ clicks }) => ({ clicks: ++clicks }));
   }
 
@@ -23,20 +42,24 @@ class App extends Component {
           >
             <ion-icon name="logo-github" />
           </Link>
-          <Link href="" label="Live">
+          <Link href="https://insiders.liveshare.vsengsaas.visualstudio.com/join?CFB4BC93A36C4A5B6746F6A27568716E8DD0" label="Live">
             <ion-icon name="link" />
           </Link>
         </Links>
         <Container>
           Click Me
-          <span role="img" aria-label="arrow down">↓</span>
+          <span role="img" aria-label="arrow down">
+            ↓
+          </span>
           <Button onClick={this.handleClick.bind(this)}>
             <span role="img" aria-label="angel">
               😇
             </span>
           </Button>
         </Container>
-        <Clicks>Clicked the button {this.state.clicks} times.</Clicks>
+        <Clicks>{`
+        Clicked the button ${this.state.clicks} times.
+        `}</Clicks>
       </Container>
     );
   }
