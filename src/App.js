@@ -1,34 +1,55 @@
 import React, { Component } from "react";
+import { Subject } from "rxjs"; // create
+import { debounceTime, mergeMap } from "rxjs/operators"; // side effects
 import styled, { injectGlobal } from "styled-components";
 
-// import fetch from 'unfetch';
-
 const EMOJIS_URI = "https://api.github.com/emojis";
+//lol
+function getEmojis() {
+  return fetch(EMOJIS_URI).then(r => r.json());
+}
 
 class App extends Component {
+  click$ = new Subject();
+
   state = {
-    clicks: 0,
+    clicks: -0
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.click$
+      .pipe(
+        debounceTime(1000),
+        mergeMap(() => getEmojis())
+      )
+      .subscribe({
+        next: data => {
+          alert(JSON.stringify(data));
+          this.setState(({ clicks }) => ({ clicks: clicks + 1 }));
+        }
+      });
+  }
 
   componentWillUnmount() {
     /**
      * Avoid Memory leaks by unsubscribing from the
      * event emitter
      */
+
+    this.click$.unsubscribe();
   }
 
   handleClick(event) {
     /**
      * React Synthetic events
-     * we want the event to live longer 
+     * we want the event to live longer
      * than this function
-     * 
-     * event.persist();
      */
+    event.persist();
 
-    this.setState(({ clicks }) => ({ clicks: ++clicks }));
+    this.click$.next();
+
+    // this.setState(({ clicks }) => ({ clicks: ++clicks }));
   }
 
   render() {
@@ -42,7 +63,10 @@ class App extends Component {
           >
             <ion-icon name="logo-github" />
           </Link>
-          <Link href="https://insiders.liveshare.vsengsaas.visualstudio.com/join?CFB4BC93A36C4A5B6746F6A27568716E8DD0" label="Live">
+          <Link
+            href="https://insiders.liveshare.vsengsaas.visualstudio.com/join?CFB4BC93A36C4A5B6746F6A27568716E8DD0"
+            label="Live"
+          >
             <ion-icon name="link" />
           </Link>
         </Links>
